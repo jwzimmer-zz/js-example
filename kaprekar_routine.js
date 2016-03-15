@@ -17,15 +17,24 @@ function add_0s_front_of_n(stringn, desiredlength) {
 }
 
 /*
-#helper function for kaprekar_routine function
-def make_int_from_list(numberlist):
-    """takes a list of digits and returns a number composed of the elements of the list"""
-    newint = ""
-    for x in numberlist:
-        newint += str(x)
-    newint = int(newint)
-    return newint
+helper function for kaprekar_routine function
+takes a list of digits and returns a number composed of the elements of the list
+*/
+function make_int_from_list(numberlist) {
+    var newint = "";
+    var i = 0;
+    var max = numberlist.length;
+    while (i<max) {
+        newint = newint.concat(numberlist[i].toString());
+        i+=1;
+    }
+    //console.log(typeof newint === 'string');
+    newint = Number(newint);
+    //console.log(typeof newint === 'number');
+    return newint;
+}
 
+/*
 def kaprekar_routine(n, iterations=0):
     """Takes a positive integer n and returns how many iterations
     it took to get to 6174 (Kaprekar's constant)
