@@ -34,6 +34,20 @@ function make_int_from_list(numberlist) {
     return newint;
 }
 
+function kaprekar_routine(n, iterations) {
+    //console.log(iterations);
+    iterations = typeof iterations !== 'undefined' ? iterations : 0;
+    //console.log(iterations);
+    if (n===6174) {
+        return iterations;
+    }
+    else {
+        var strn = n.toString();
+
+    }
+}
+
+console.log(kaprekar_routine(6174));
 /*
 def kaprekar_routine(n, iterations=0):
     """Takes a positive integer n and returns how many iterations
