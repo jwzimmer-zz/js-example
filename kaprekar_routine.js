@@ -34,18 +34,22 @@ function make_int_from_list(numberlist) {
 }
 
 /*
-* n should be an integer of 4 or fewer digits and not a repdigit (when it is 4 digits long
+* n should be an integer of 4 or fewer digits and not a repdigit (when it is 4 digits long;
 * it can be supplied by the user as a repdigit of 3 or fewer digits)
 */
 function verify_kaprekar_n_input(n, iterations) {
     var strn = n.toString();
-    if ((iterations === 0) && ((typeof n !== 'number') || (! ('.' in strn)) || (strn.length > 4))) {
-        console.log("Input must be an integer of 4 or less digits in length");
-        return ["Input must be an integer of 4 or less digits in length",""];
+    if ((iterations === 0) &&
+        ((typeof n !== 'number') || (strn.indexOf(".") !== -1) || (strn.length > 4) || (n <= 0))) {
+        //console.log("Input must be an integer of 4 or less digits in length");
+        return ["Input must be a positive integer of 4 or less digits in length",""];
     }
     else if (strn.length < 4) {
         strn = add_0s_front_of_n(strn, 4);
-        return [Number(strn), strn];
+        return [n, strn];
+    }
+    else {
+        return [n, String(n)];
     }
 }
 /* Takes a positive integer n and returns how many iterations
@@ -60,32 +64,35 @@ function kaprekar_routine(n, iterations) {
     }
     else {
         //check that user has supplied valid initial input to function
-        narray = verify_kaprekar_n_input(n, iterations);
-        if (typeof narray[0] !== 'number') {
-            return narray[0];
-        }
-        var strn = narray[1];
+        var narray = verify_kaprekar_n_input(n, iterations);
         n = narray[0];
+        var strn = narray[1];
+        if (typeof n !== 'number') {
+            return n;
+        }
+        var nlist = [];
+        var j = 0;
+        while (j<strn.length) {
+            nlist.push(strn[j]);
+            j+=1;
+        }
+        //from small to large digits
+        nlist.sort(function(a,b){return a-b;});
+        var smalln = make_int_from_list(nlist);
+        //from large to small digits
+        nlist.reverse();
+        var largen = make_int_from_list(nlist);
+        var newn = largen - smalln;
+        iterations += 1;
+        //console.log(n, strn, newn, largen, smalln, iterations);
+        return kaprekar_routine(newn, iterations);
     }
 }
 
 console.log(kaprekar_routine(6174));
-/*
-    else:
-        strn = str(n)
-        if len(strn) < 4:
-            strn = add_0s_front_of_n(strn, 4)
-        else:
-            pass
-        nlist = [int(x) for x in strn]
-        #from small to large digits
-        nlist.sort()
-        #from large to small digits
-        reversedlist = list(reversed(nlist))
-        largen = make_int_from_list(reversedlist)
-        smalln = make_int_from_list(nlist)
-        newn = largen - smalln
-        iterations += 1
-        #print n, newn, largen, smalln, iterations
-        return kaprekar_routine(newn, iterations)*/
+console.log(kaprekar_routine(12));
+console.log(kaprekar_routine(98282812));
+console.log(kaprekar_routine(0));
+console.log(kaprekar_routine(-1));
+console.log(kaprekar_routine(9.4));
 
