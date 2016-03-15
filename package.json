@@ -1,0 +1,22 @@
+{
+  "name": "jstest",
+  "version": "0.0.0",
+  "description": "",
+  "main": "kaprekar_routine.js",
+  "dependencies": {
+    "jasmine": "~2.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jwzimmer/js-example.git"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/jwzimmer/js-example/issues"
+  }
+}
