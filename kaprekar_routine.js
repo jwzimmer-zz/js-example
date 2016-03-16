@@ -40,16 +40,32 @@ function make_int_from_list(numberlist) {
 function verify_kaprekar_n_input(n, iterations) {
     var strn = n.toString();
     if ((iterations === 0) &&
-        ((typeof n !== 'number') || (strn.indexOf(".") !== -1) || (strn.length > 4) || (n <= 0))) {
-        //console.log("Input must be an integer of 4 or less digits in length");
+        ((/^\+?\d+$/.test(strn) !== true) || (strn.length > 4))) {
         return ["Input must be a positive integer of 4 or less digits in length",""];
     }
-    else if (strn.length < 4) {
+    else if ((strn.length < 4) && (Number(n) > 0)) {
+        n = Number(n);
         strn = add_0s_front_of_n(strn, 4);
         return [n, strn];
     }
     else {
-        return [n, String(n)];
+        //check that n is not a repdigit; by checking here instead of in the 1st if statement, I can rely on n
+        // to have the properties of a positive integer of length 4 so I can index into it
+        n = Number(n);
+        if (iterations === 0) {
+            if ((strn[0] !== strn[1]) || (strn[2] !== strn[3]) || (strn[1] !== strn[2]) && (n > 0)) {
+                return [n, strn];
+            }
+            else {
+                return ["Input must be a positive integer of 4 or less digits in length",""];
+            }
+        }
+        else if (n > 0) {
+            return [n, strn];
+        }
+        else {
+            return ["Input must be a positive integer of 4 or less digits in length",""];
+        }
     }
 }
 /* Takes a positive integer n and returns how many iterations
@@ -58,18 +74,22 @@ function verify_kaprekar_n_input(n, iterations) {
 function kaprekar_routine(n, iterations) {
     //set 0 as default value of iterations
     iterations = typeof iterations !== 'undefined' ? iterations : 0;
+    //since I am imagining a user and UI, user input would probably be interpreted as a string
+    //(originally this function took a number as input)
+    //so I need to convert the now expected "string" version of the input into a number
+    //check that user has supplied valid initial input to function
+    var narray = verify_kaprekar_n_input(n, iterations);
+    n = narray[0];
+    var strn = narray[1];
+    //if the user input was not valid, return a message about invalid input
+    if (typeof n !== 'number') {
+        return n;
+    }
     //base case
     if (n===6174) {
         return iterations;
     }
     else {
-        //check that user has supplied valid initial input to function
-        var narray = verify_kaprekar_n_input(n, iterations);
-        n = narray[0];
-        var strn = narray[1];
-        if (typeof n !== 'number') {
-            return n;
-        }
         var nlist = [];
         var j = 0;
         while (j<strn.length) {
@@ -84,15 +104,14 @@ function kaprekar_routine(n, iterations) {
         var largen = make_int_from_list(nlist);
         var newn = largen - smalln;
         iterations += 1;
+        //uncomment below line for debugging
         //console.log(n, strn, newn, largen, smalln, iterations);
-        return kaprekar_routine(newn, iterations);
+        //return kaprekar_routine(newn, iterations);
+        return "hi";
     }
 }
 
-console.log(kaprekar_routine(6174));
-console.log(kaprekar_routine(12));
-console.log(kaprekar_routine(98282812));
-console.log(kaprekar_routine(0));
-console.log(kaprekar_routine(-1));
-console.log(kaprekar_routine(9.4));
-
+// Export node module
+if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
+    module.exports = kaprekar_routine;
+}
