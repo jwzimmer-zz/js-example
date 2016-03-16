@@ -73,7 +73,7 @@ describe("Kaprekar Routine function", function() {
 		it("should return instructional message about valid input if input is a 4 digit repdigit", function() {
 			expect(kaprekar_routine(1111)).toEqual("Input must be a positive integer of 4 or less digits in length");
 		});
-		describe("Special Characters as invalid input to function", function() {
+		/*describe("Special Characters as invalid input to function", function() {
 			it("should return instructional message about valid input if input has ! in it", function() {
 				expect(kaprekar_routine(48!)).toEqual("Input must be a positive integer of 4 or less digits in length");
 			});
@@ -84,6 +84,6 @@ describe("Kaprekar Routine function", function() {
 				expect(kaprekar_routine(<48)).toEqual("Input must be a positive integer of 4 or less digits in length");
 			});
 
-		});
+		});*/
 	});
 });
