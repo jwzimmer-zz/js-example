@@ -38,7 +38,15 @@ module.exports = {
    * n should be an integer of 4 or fewer digits and not a repdigit (when it is 4 digits long;
    * it can be supplied by the user as a repdigit of 3 or fewer digits)
    */
-  verify_kaprekar_n_input: function(n, iterations) {
+
+   verify_kaprekar_n_input: function(n, iterations) {
+        var strn = String(n);
+        console.log("string(n) ".concat(strn));
+        if (iterations === 0) {
+            
+        }
+   },
+  /*verify_kaprekar_n_input: function(n, iterations) {
     var strn = n.toString();
     if ((iterations === 0) &&
         ((/^\+?\d+$/.test(strn) !== true) || (strn.length > 4))) {
@@ -68,7 +76,8 @@ module.exports = {
         return ["Input must be a positive integer of 4 or less digits in length",""];
       }
     }
-  },
+  },*/
+
   /* Takes a positive integer n and returns how many iterations
    it took to get to 6174 (Kaprekar's constant)
    Input should be 4 or fewer digits and not a repdigit */
@@ -107,20 +116,9 @@ module.exports = {
       iterations += 1;
       //uncomment below line for debugging
       //console.log(n, strn, newn, largen, smalln, iterations);
-      return module.exports.kaprekar_routine(newn, iterations);
+      return kaprekar_routine(newn, iterations);
       //you can use this line to intentionally trigger test failures in order to see how Jasmine works
       //return "hi";
     }
   }
 };
-
-// // Export node module
-// if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
-//     module.exports = {
-//       kaprekar_routine: kaprekar_routine,
-//       add_0s_front_of_n: add_0s_front_of_n
-//       };
-// }
-// /*if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
-//     module.exports = add_0s_front_of_n;
-// }*/

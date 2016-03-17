@@ -104,9 +104,75 @@ describe("Kaprekar Routine helper functions", function() {
 	    it("should return 000+n when n has length 1", function() {
 	    	expect(kaprekar_routine.add_0s_front_of_n("4",4)).toEqual("0004");
 	    });
-	    it("should return 00000+n when n has length 1 and 6 is passed in as the length", function() {
+	    it("should return 00000+n when n has length 1 and 6 is passed in as the desired length", function() {
 	    	expect(kaprekar_routine.add_0s_front_of_n("4",4)).toEqual("0004");
 	    });
-
+	});
+	//since make_int_from_list doesn't receive user input, it doesn't need to be tested for all kinds of crazy input
+	describe("> make_int_from_list function", function() {
+	    it("should return 1234 when the input list is [1,2,3,4]", function() {
+	    	expect(kaprekar_routine.make_int_from_list([1,2,3,4])).toEqual(1234);
+	    });
+	    it("should return 234 when the input list is [0,2,3,4], leading 0s should be fine", function() {
+	    	expect(kaprekar_routine.make_int_from_list([0,2,3,4])).toEqual(234);
+	    });
+	    it("should return 33234 when the input list is [3,3,2,3,4], length greater than 4 should be fine", function() {
+	    	expect(kaprekar_routine.make_int_from_list([3,3,2,3,4])).toEqual(33234);
+	    });
+	    it("should return 33234 when the input list is [33,2,3,4], numbers with multiple digits should be fine", function() {
+	    	expect(kaprekar_routine.make_int_from_list([33,2,3,4])).toEqual(33234);
+	    });
+	    it("should return 33230 when the input list is [3,3,2,3,0], trailing 0s should be fine", function() {
+	    	expect(kaprekar_routine.make_int_from_list([3,3,2,3,0])).toEqual(33230);
+	    });
+	});
+	//this function does receive crazy user input via the main kaprekar_routine function, so it should be tested
+	describe("> verify_kaprekar_n_input function", function() {
+		describe("> Invalid inputs", function() {
+			describe("> Special characters", function() {
+			    it("should return [failure_message, empty_string] when the input has special characters [,,,]", function() {
+			    	expect(kaprekar_routine.verify_kaprekar_n_input("[1,2,3,4]")).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+			    });
+			    it("should return [failure_message, empty_string] when the input has special characters %", function() {
+			    	expect(kaprekar_routine.verify_kaprekar_n_input("46%")).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+			    });
+			    it("should return [failure_message, empty_string] when the input has special characters !", function() {
+			    	expect(kaprekar_routine.verify_kaprekar_n_input("!")).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+			    });
+			    it("should return [failure_message, empty_string] when the input has special characters ^", function() {
+			    	expect(kaprekar_routine.verify_kaprekar_n_input("4^")).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+			    });
+			    it("should return [failure_message, empty_string] when the input has special characters =", function() {
+			    	expect(kaprekar_routine.verify_kaprekar_n_input("467=")).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+			    });
+			    it("should return [failure_message, empty_string] when the input has special characters +", function() {
+			    	expect(kaprekar_routine.verify_kaprekar_n_input("+78")).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+			    });
+			    it("should return [failure_message, empty_string] when the input has special characters _", function() {
+			    	expect(kaprekar_routine.verify_kaprekar_n_input("46_78")).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+			    });
+			});
+			describe("> Invalid numbers", function() {
+				it("should return [failure_message, empty_string] when the input is a decimal number", function() {
+		    		expect(kaprekar_routine.verify_kaprekar_n_input("46.9",0)).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+		    		expect(kaprekar_routine.verify_kaprekar_n_input(".9",0)).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+		    		expect(kaprekar_routine.verify_kaprekar_n_input("46.",0)).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+		    	});
+		    	it("should return [failure_message, empty_string] when the input is a negative number", function() {
+		    		expect(kaprekar_routine.verify_kaprekar_n_input("-46",0)).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+		    	});
+		    	it("should return [failure_message, empty_string] when the input is a 4 digit repdigit", function() {
+		    		expect(kaprekar_routine.verify_kaprekar_n_input("4444",0)).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+		    	});
+		    	it("should return [failure_message, empty_string] when the input is 0", function() {
+		    		expect(kaprekar_routine.verify_kaprekar_n_input("000",0)).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+		    		expect(kaprekar_routine.verify_kaprekar_n_input("0",0)).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+		    		expect(kaprekar_routine.verify_kaprekar_n_input("0000000000",0)).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+		    	});
+		    	it("should return [failure_message, empty_string] when the input is a long number (more than 4 digits)", function() {
+		    		expect(kaprekar_routine.verify_kaprekar_n_input("465674382982736335525525252525252",0)).toEqual(["Input must be a positive integer of 4 or less digits in length",""]);
+		    	});
+			});
+		});
 	});
 });
